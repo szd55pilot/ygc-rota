@@ -1,5 +1,5 @@
 # rota.py
-# v1.1.2
+# v1.5 - Fixed slot sorting to process dates chronologically for consecutive day checks
 
 import argparse
 import random
@@ -25,6 +25,9 @@ PRIMARY_ROLES = [
 LEAD_ROLE = "Lead Instructor"
 
 ALL_ROLES = ["Instructor", LEAD_ROLE] + PRIMARY_ROLES[1:]
+
+# Number of days to look back when counting shifts
+SHIFT_WINDOW_DAYS = 14
 
 # ==================================================
 # DATE HELPERS
@@ -57,6 +60,14 @@ def is_person_active_on(person: str, d: date) -> bool:
             return False
     return True
 
+def count_recent_shifts(person: str, current_date: date, shift_history: Dict[str, List[date]]) -> int:
+    """Count how many shifts person has worked in the last SHIFT_WINDOW_DAYS days"""
+    if person not in shift_history:
+        return 0
+    
+    cutoff = current_date - timedelta(days=SHIFT_WINDOW_DAYS)
+    return sum(1 for d in shift_history[person] if cutoff < d < current_date)
+
 # ==================================================
 # SUPERVISION LOGIC
 # ==================================================
@@ -67,23 +78,27 @@ def lead_required(assignments: Dict[str, str]) -> bool:
 # ==================================================
 # ROTA ENGINE
 # ==================================================
-def generate_week_rota(
-    dates: List[date],
-    shifts_used: Dict[str, int],
-) -> Dict[date, Dict[str, str]]:
-
+def generate_rota(start: date, months: int) -> Dict[date, Dict[str, str]]:
+    days = generate_operating_dates(start, months)
+    
+    # Track all dates each person has worked (for rolling window check)
+    shift_history = defaultdict(list)
+    
+    # Track last date assigned per person (for consecutive day prevention)
+    last_date_assigned = defaultdict(lambda: None)
+    
+    # Track last person assigned to each role (for role rotation)
+    last_assigned = defaultdict(lambda: None)
+    
     rota = {
         d: {r: "UNFILLED" for r in ALL_ROLES}
-        for d in dates
+        for d in days
     }
-
-    assigned_today = defaultdict(set)
-    last_assigned = defaultdict(lambda: None)
 
     # ---------
     # STEP 1: Assign normal roles
     # ---------
-    slots = [(d, r) for d in dates for r in PRIMARY_ROLES]
+    slots = [(d, r) for d in days for r in PRIMARY_ROLES]
 
     def eligible_count(d, r):
         day = d.strftime("%a")
@@ -94,10 +109,20 @@ def generate_week_rota(
             and r in info["allowed_roles"]
         )
 
-    slots.sort(key=lambda s: (eligible_count(*s), s[0], s[1]))
+    # Sort by DATE FIRST, then by eligible count, then by role
+    # This ensures chronological processing for consecutive day checks
+    slots.sort(key=lambda s: (s[0], eligible_count(*s), s[1]))
 
     for d, role in slots:
         day = d.strftime("%a")
+        assigned_today = set()
+        
+        # Collect who's already assigned on this date
+        for r in ALL_ROLES:
+            person = rota[d].get(r)
+            if person and person not in ["UNFILLED", "—", "NEED TO FILL", "(REQUIRED)"]:
+                assigned_today.add(person)
+        
         candidates = []
 
         for p, info in PEOPLE.items():
@@ -107,46 +132,62 @@ def generate_week_rota(
                 continue
             if role not in info["allowed_roles"]:
                 continue
-            if shifts_used[p] >= info["max_shifts_per_week"]:
+            # Check rolling window shift limit
+            recent_shifts = count_recent_shifts(p, d, shift_history)
+            if recent_shifts >= info["max_shifts_per_week"]:
                 continue
-            if p in assigned_today[d]:
+            if p in assigned_today:
                 continue
             if last_assigned[role] == p:
+                continue
+            # Check if person worked yesterday
+            if last_date_assigned[p] and (d - last_date_assigned[p]).days == 1:
                 continue
             candidates.append(p)
 
         if not candidates:
+            # Fallback: relax some constraints but keep rolling window limit and consecutive day check
             candidates = [
                 p for p, info in PEOPLE.items()
                 if is_person_active_on(p, d)
                 and day in info["allowed_days"]
                 and role in info["allowed_roles"]
-                and p not in assigned_today[d]
+                and p not in assigned_today
+                and count_recent_shifts(p, d, shift_history) < info["max_shifts_per_week"]
+                and not (last_date_assigned[p] and (d - last_date_assigned[p]).days == 1)
             ]
 
         if not candidates:
             rota[d][role] = "NEED TO FILL"
             continue
 
-        min_shifts = min(shifts_used[p] for p in candidates)
-        pool = [p for p in candidates if shifts_used[p] == min_shifts]
+        min_shifts = min(count_recent_shifts(p, d, shift_history) for p in candidates)
+        pool = [p for p in candidates if count_recent_shifts(p, d, shift_history) == min_shifts]
         random.shuffle(pool)
         chosen = pool[0]
 
         rota[d][role] = chosen
-        shifts_used[chosen] += 1
-        assigned_today[d].add(chosen)
+        shift_history[chosen].append(d)
         last_assigned[role] = chosen
+        last_date_assigned[chosen] = d
 
     # ---------
     # STEP 2: Lead Instructor (conditional)
     # ---------
-    for d in dates:
+    for d in days:
         if not lead_required(rota[d]):
             rota[d][LEAD_ROLE] = "—"
             continue
 
         day = d.strftime("%a")
+        assigned_today = set()
+        
+        # Collect who's already assigned on this date
+        for r in ALL_ROLES:
+            person = rota[d].get(r)
+            if person and person not in ["UNFILLED", "—", "NEED TO FILL", "(REQUIRED)"]:
+                assigned_today.add(person)
+        
         candidates = []
 
         for p, info in PEOPLE.items():
@@ -156,7 +197,14 @@ def generate_week_rota(
                 continue
             if LEAD_ROLE not in info["allowed_roles"]:
                 continue
-            if p in assigned_today[d]:
+            if p in assigned_today:
+                continue
+            # Check rolling window shift limit
+            recent_shifts = count_recent_shifts(p, d, shift_history)
+            if recent_shifts >= info["max_shifts_per_week"]:
+                continue
+            # Check consecutive days
+            if last_date_assigned[p] and (d - last_date_assigned[p]).days == 1:
                 continue
             candidates.append(p)
 
@@ -164,29 +212,15 @@ def generate_week_rota(
             rota[d][LEAD_ROLE] = "(REQUIRED)"
             continue
 
-        min_shifts = min(shifts_used[p] for p in candidates)
-        pool = [p for p in candidates if shifts_used[p] == min_shifts]
+        min_shifts = min(count_recent_shifts(p, d, shift_history) for p in candidates)
+        pool = [p for p in candidates if count_recent_shifts(p, d, shift_history) == min_shifts]
         random.shuffle(pool)
         chosen = pool[0]
 
         rota[d][LEAD_ROLE] = chosen
-        shifts_used[chosen] += 1
-        assigned_today[d].add(chosen)
+        shift_history[chosen].append(d)
         last_assigned[LEAD_ROLE] = chosen
-
-    return rota
-
-def generate_rota(start: date, months: int) -> Dict[date, Dict[str, str]]:
-    days = generate_operating_dates(start, months)
-    weeks = defaultdict(list)
-    for d in days:
-        weeks[d.isocalendar()[1]].append(d)
-
-    shifts_used = defaultdict(int)
-    rota = {}
-
-    for week in weeks.values():
-        rota.update(generate_week_rota(week, shifts_used))
+        last_date_assigned[chosen] = d
 
     return dict(sorted(rota.items()))
 
