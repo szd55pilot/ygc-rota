@@ -96,7 +96,7 @@ PEOPLE = {
     },
 
     "A HOLLINGS": {
-        "allowed_days": {"Sat", "Sun"},
+        "allowed_days": {"Sat", "Sun", "Wed"},
         "allowed_roles": {"Instructor"},
         "max_shifts_per_week": 1,
         "requires_snr_di": True,
@@ -208,7 +208,7 @@ PEOPLE = {
     },
 
        "T PAVIS": {
-        "allowed_days": {"Wed", "Sat", "Sun"},
+        "allowed_days": {"Sat"},
         "allowed_roles": {"BI/IFP"},
         "max_shifts_per_week": 1
     },
@@ -293,12 +293,6 @@ PEOPLE = {
         "max_shifts_per_week": 1
     },
 
-    "M DOWLING": {
-        "allowed_days": {"Wed"},
-        "allowed_roles": {"LPS"},
-        "max_shifts_per_week": 1
-    },
-
     "R ROWNTREE": {
         "allowed_days": {"Wed"},
         "allowed_roles": {"LPS"},
@@ -308,6 +302,12 @@ PEOPLE = {
 #
 # Duty Pilots
 #
+    "M DOWLING": {
+        "allowed_days": {"Wed"},
+        "allowed_roles": {"Duty Pilot"},
+        "max_shifts_per_week": 1
+    },
+
     "J DAY": {
         "allowed_days": {"Sun"},
         "allowed_roles": {"Duty Pilot"},
