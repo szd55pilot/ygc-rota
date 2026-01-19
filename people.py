@@ -296,7 +296,10 @@ PEOPLE = {
     "R ROWNTREE": {
         "allowed_days": {"Wed"},
         "allowed_roles": {"LPS"},
-        "max_shifts_per_week": 1
+        "max_shifts_per_week": 1,
+        "inactive_periods": [
+          ("2026-02-17", "2026-02-19")
+        ]
     },
 
 #
