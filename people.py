@@ -365,7 +365,7 @@ PEOPLE = {
         "max_shifts_per_week": 1
     },
 
-    "R DONELLY": {
+    "R DONNELLY": {
         "allowed_days": {"Wed"},
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1
