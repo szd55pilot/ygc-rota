@@ -275,7 +275,7 @@ PEOPLE = {
         "max_shifts_per_week": 1
     },
 
-    "S HANKIN": {
+    "S HAWKIN": {
         "allowed_days": {"Sat", "Sun"},
         "allowed_roles": {"LPS"},
         "max_shifts_per_week": 1
