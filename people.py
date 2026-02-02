@@ -302,6 +302,12 @@ PEOPLE = {
         ]
     },
 
+    "K MALONE": {
+        "allowed_days": {"Wed"},
+        "allowed_roles": {"LPS"},
+        "max_shifts_per_week": 1
+    },
+
 #
 # Duty Pilots
 #
