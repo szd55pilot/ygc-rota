@@ -71,7 +71,10 @@ PEOPLE = {
         "requires_snr_di": False
     }
 }
+```
+
 Notes
+
 Allowed_days and allowed_roles are sets
 
 Inactive_periods are optional
@@ -81,16 +84,20 @@ Dates must be ISO format: YYYY-MM-DD
 ### Inactive periods
 Inactive periods prevent a person from being scheduled during a given date range.
 
-Single day inactive
+Single day inactive and multiple inactive periods
+
+```python
+
 "inactive_periods": [
     ("2026-02-21", "2026-02-21")
 ]
-Multiple inactive periods
+
 "inactive_periods": [
     ("2026-02-21", "2026-02-23"),
     ("2026-03-10", "2026-03-10"),
     ("2026-04-01", "2026-04-07")
 ]
+```
 
 ### Lead Instructor logic
 If the person assigned as Instructor has:
