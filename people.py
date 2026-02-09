@@ -92,7 +92,25 @@ PEOPLE = {
         "allowed_days": {"Wed", "Sat", "Sun"},
         "allowed_roles": {"Instructor"},
         "max_shifts_per_week": 1,
-        "requires_snr_di": False
+        "requires_snr_di": False,
+        "inactive_periods": [
+            ("2026-04-04", "2026-04-05"),
+            ("2026-04-11", "2026-04-12"),
+            ("2026-04-15", "2026-04-16"),
+            ("2026-04-22", "2026-04-23"),
+            ("2026-04-29", "2026-04-30"),
+            ("2026-05-03", "2026-05-04"),
+            ("2026-05-09", "2026-05-10"),
+            ("2026-05-16", "2026-05-17"),
+            ("2026-05-27", "2026-05-28"),
+            ("2026-06-03", "2026-06-04"),
+            ("2026-06-10", "2026-06-11"),
+            ("2026-06-14", "2026-06-15"),
+            ("2026-06-17", "2026-06-18"),
+            ("2026-06-20", "2026-06-21"),
+            ("2026-06-27", "2026-06-28"),
+        ]
+
     },
 
     "A HOLLINGS": {
@@ -123,7 +141,7 @@ PEOPLE = {
 
         "P NAYERI": {
         "allowed_days": {"Sun"},
-        "allowed_roles": {"Instructor", "Tug Pilot"},
+        "allowed_roles": {"Instructor", "Tug Pilot", "Leed Instructor"},
         "max_shifts_per_week": 1,
         "requires_snr_di": False,
         "inactive_periods": [
@@ -298,7 +316,7 @@ PEOPLE = {
         "allowed_roles": {"LPS"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
-          ("2026-02-17", "2026-02-19")
+          ("2026-02-17", "2026-03-20")
         ]
     },
 
@@ -308,6 +326,11 @@ PEOPLE = {
         "max_shifts_per_week": 1
     },
 
+    "C THRUSH": {
+        "allowed_days": {"Wed", "Sat", "Sun"},
+        "allowed_roles": {"LPS"},
+        "max_shifts_per_week": 1
+    },
 #
 # Duty Pilots
 #
@@ -349,12 +372,6 @@ PEOPLE = {
 
     "T CHEN": {
         "allowed_days": {"Sat", "Sun"},
-        "allowed_roles": {"Duty Pilot"},
-        "max_shifts_per_week": 1
-    },
-
-    "C THRUSH": {
-        "allowed_days": {"Wed", "Sat", "Sun"},
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1
     },
