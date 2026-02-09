@@ -32,6 +32,13 @@ This repository contains a Python script to generate a **gliding club instructor
 
 ## Usage
 
+## Alternate BI/IFP weeks (optional)
+
+By default, the rota schedules a BI/IFP every operating day.
+
+If you want BI/IFP to be required only on alternate club-weeks, you can use:
+
 ```bash
-python3 rota.py --start YYYY-MM-DD --months N
+python3 rota.py --start 2026-02-01 --months 2 --bi-alternate
+
 
