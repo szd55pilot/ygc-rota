@@ -113,25 +113,33 @@ If no Lead Instructor can be assigned, the rota prints:
 Basic usage (1 month)
 Generate one month starting from a specific date:
 
-python3 rota.py --start 2026-02-01
+```bash
 
+python3 rota.py --start 2026-02-01
+```
 Generate multiple months
 
 Generate 3 months starting from a specific date:
 
-python3 rota.py --start 2026-02-01 --months 3
+```bash
 
+python3 rota.py --start 2026-02-01 --months 3
+```
 View help / options
 
-python3 rota.py --help
+```bash
 
+python3 rota.py --help
+```
 ### Alternate BI/IFP weeks (optional)
 By default, the rota schedules a BI/IFP every operating day.
 
 If you want BI/IFP to be required only on alternate club-weeks, you can use:
 
-python3 rota.py --start 2026-02-01 --months 2 --bi-alternate
+```bash
 
+python3 rota.py --start 2026-02-01 --months 2 --bi-alternate
+```
 A "club-week" means the Wed/Sat/Sun operating cycle (treated as one unit).
 
 The default pattern is:
@@ -145,14 +153,15 @@ etc.
 Starting with a no-BI week
 If you want the first club-week to be the "no BI required" week, use:
 
+```bash
+
 python3 rota.py --start 2026-02-01 --months 2 --bi-alternate --bi-first-off
-Output notes
-If no eligible person can be found, the role is shown as:
+```
 
-NEED TO FILL
-If a Lead Instructor is required but cannot be assigned, it is shown as:
+### Output notes
 
-(REQUIRED)
-If BI/IFP is not required for that club-week (alternate BI mode), it is shown as:
+If no eligible person can be found, the role is shown as: NEED TO FILL
 
-N/A
+If a Lead Instructor is required but cannot be assigned, it is shown as: (REQUIRED)
+
+If BI/IFP is not required for that club-week (alternate BI mode), it is shown as: n/a
