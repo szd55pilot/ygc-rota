@@ -316,7 +316,7 @@ PEOPLE = {
         "allowed_roles": {"LPS"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
-          ("2026-02-17", "2026-02-19")
+          ("2026-02-17", "2026-03-20")
         ]
     },
 
@@ -326,6 +326,11 @@ PEOPLE = {
         "max_shifts_per_week": 1
     },
 
+    "C THRUSH": {
+        "allowed_days": {"Wed", "Sat", "Sun"},
+        "allowed_roles": {"LPS"},
+        "max_shifts_per_week": 1
+    },
 #
 # Duty Pilots
 #
@@ -367,12 +372,6 @@ PEOPLE = {
 
     "T CHEN": {
         "allowed_days": {"Sat", "Sun"},
-        "allowed_roles": {"Duty Pilot"},
-        "max_shifts_per_week": 1
-    },
-
-    "C THRUSH": {
-        "allowed_days": {"Wed", "Sat", "Sun"},
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1
     },
