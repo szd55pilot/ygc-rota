@@ -407,12 +407,6 @@ PEOPLE = {
         ]
     },
 
-    "MAX SIU": {
-        "allowed_days": {"Sat", "Sun"},
-        "allowed_roles": {"Duty Pilot"},
-        "max_shifts_per_week": 1
-    },
-
     "J DAY": {
         "allowed_days": {"Wed", "Sat", "Sun"},
         "allowed_roles": {"Duty Pilot"},
