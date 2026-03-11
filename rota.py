@@ -334,7 +334,3 @@ if __name__ == "__main__":
 
     rota = generate_rota(start, args.months, args.bi_alternate, args.bi_first_off)
     print_rota_table(rota)
-
-
-
-
