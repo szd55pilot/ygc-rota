@@ -1,167 +1,178 @@
 # YGC Rota Generator
 
-This project generates a simple rota for York Gliding Centre operating days.
+A Python tool that generates instructor rotas for York Gliding Centre operating days (Wednesday, Saturday, Sunday) with intelligent scheduling constraints and optional alternating BI/IFP weeks.
 
-It assigns people to roles on:
+---
 
-- **Wednesday**
-- **Saturday**
-- **Sunday**
+## Features
 
-The rota is generated from a `people.py` file containing each person’s:
-
-- allowed days
-- allowed roles
-- workload limit
-- whether they require a Lead Instructor
-- optional inactive periods (date windows)
-
-Output is printed as a fixed-width table to the terminal.
+- **Smart scheduling**: Respects person workload limits and allowed days/roles
+- **14-day rolling window**: Prevents overwork by tracking recent shifts
+- **Consecutive day prevention**: Blocks same person from flying two consecutive operating days
+- **Lead Instructor logic**: Automatically assigns supervision when required
+- **Inactive periods**: Support for vacation/unavailability windows
+- **Alternate BI/IFP weeks**: Optional every-other-week scheduling for BI/IFP role
+- **Club-week anchoring**: Groups Wed/Sat/Sun as a single scheduling unit
 
 ---
 
 ## Files
 
-### `rota.py`
-The rota generator script.
-
-### `people.py`
-Contains a dictionary called `PEOPLE` which defines who can do what and when.
+| File | Purpose |
+|------|---------|
+| `rota.py` | Main rota generator engine |
+| `people.py` | Person definitions and availability |
+| `tests/test_rota.py` | Unit tests |
 
 ---
 
 ## Roles
 
-The rota currently assigns:
+The rota assigns the following roles:
 
-- Instructor
-- Lead Instructor (only when required)
-- Tug Pilot
-- BI/IFP
-- LPS
-- Duty Pilot
+- **Instructor** – Primary flying instructor
+- **Lead Instructor** – Senior supervisor (conditional, when required)
+- **Tug Pilot** – Tow plane operator
+- **BI/IFP** – Basic Instruction / Instructor familiarisation pass
+- **LPS** – Launch Point Supervisor
+- **Duty Pilot** – Daily operations coordinator
 
 ---
 
-## `people.py` format
+## `people.py` Configuration
 
-The `people.py` file must contain a dictionary named `PEOPLE`.
+The `people.py` file must contain a `PEOPLE` dictionary.
 
-Example:
+### Example
 
 ```python
 PEOPLE = {
-    #
-    # Instructors
-    #
-    "A NAME": {
-        "allowed_days": {"Wed"},
+    "ALICE": {
+        "allowed_days": {"Wed", "Sat", "Sun"},
         "allowed_roles": {"Instructor", "Lead Instructor"},
-        "max_shifts_per_week": 1,
+        "max_shifts_per_week": 2,
         "requires_snr_di": False,
         "inactive_periods": [
             ("2026-02-21", "2026-02-23"),
-        ]
+            ("2026-04-01", "2026-04-07"),
+        ],
     },
-
-    "A NOTHERNAME": {
-        "allowed_days": {"Wed", "Sat", "Sun"},
-        "allowed_roles": {"Instructor"},
-        "max_shifts_per_week": 1,
-        "requires_snr_di": False
-    }
+    
+    "BOB": {
+        "allowed_days": {"Wed", "Sat"},
+        "allowed_roles": {"Tug Pilot", "Duty Pilot"},
+        "max_shifts_per_week": 3,
+    },
 }
 ```
 
-Notes
+### Field Reference
 
-Allowed_days and allowed_roles are sets
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `allowed_days` | Set[str] | Yes | Days person can fly: `{"Wed", "Sat", "Sun"}` |
+| `allowed_roles` | Set[str] | Yes | Roles person can perform |
+| `max_shifts_per_week` | int | Yes | Maximum shifts per 7-day period |
+| `requires_snr_di` | bool | No | If `True`, a Lead Instructor is required when this person is assigned as Instructor (default: `False`) |
+| `inactive_periods` | List[Tuple[str, str]] | No | Date ranges when unavailable (inclusive). Dates must be ISO format: `YYYY-MM-DD` |
 
-Inactive_periods are optional
+---
 
-Dates must be ISO format: YYYY-MM-DD
+## Usage
 
-### Inactive periods
-Inactive periods prevent a person from being scheduled during a given date range.
-
-Single day inactive and multiple inactive periods
-
-```python
-
-"inactive_periods": [
-    ("2026-02-21", "2026-02-21")
-]
-
-"inactive_periods": [
-    ("2026-02-21", "2026-02-23"),
-    ("2026-03-10", "2026-03-10"),
-    ("2026-04-01", "2026-04-07")
-]
-```
-
-### Lead Instructor logic
-If the person assigned as Instructor has:
-
-"requires_snr_di": True
-Then a Lead Instructor is required for that day.
-
-If no Lead Instructor can be assigned, the rota prints:
-
-(REQUIRED)
-
-### Running the rota
-Basic usage (1 month)
-Generate one month starting from a specific date:
+### Basic (one month from today)
 
 ```bash
+python3 rota.py
+```
 
+### Specific start date
+
+```bash
 python3 rota.py --start 2026-02-01
 ```
-Generate multiple months
 
-Generate 3 months starting from a specific date:
+### Multiple months
 
 ```bash
-
 python3 rota.py --start 2026-02-01 --months 3
 ```
-View help / options
+
+### Alternate BI/IFP weeks
+
+By default, BI/IFP is required on every operating day. Use `--bi-alternate` to require BI/IFP only on alternating club-weeks (Wed/Sat/Sun groupings):
 
 ```bash
+python3 rota.py --start 2026-02-01 --bi-alternate
+```
 
+Pattern:
+- Week 1: BI/IFP required
+- Week 2: BI/IFP not required (shown as `n/a`)
+- Week 3: BI/IFP required
+- ...
+
+### Invert alternate pattern (start with no BI week)
+
+```bash
+python3 rota.py --start 2026-02-01 --bi-alternate --bi-first-off
+```
+
+### View all options
+
+```bash
 python3 rota.py --help
 ```
-### Alternate BI/IFP weeks (optional)
-By default, the rota schedules a BI/IFP every operating day.
 
-If you want BI/IFP to be required only on alternate club-weeks, you can use:
+---
+
+## Scheduling Constraints
+
+The rota respects the following constraints:
+
+1. **Workload limit**: No person exceeds their `max_shifts_per_week` per calendar week
+2. **14-day rolling window**: No person assigned more than their limit in the past 14 days
+3. **Consecutive day prevention**: Same person cannot fly on consecutive operating days (e.g., Wed then Sat)
+4. **Inactive periods**: People are excluded during specified date ranges
+5. **Role restrictions**: Only people with allowed roles are considered for each slot
+6. **Day restrictions**: Only people available on that specific day are considered
+
+---
+
+## Output
+
+### Status Messages
+
+| Status | Meaning |
+|--------|---------|
+| `NEED TO FILL` | No eligible person found for this role |
+| `(REQUIRED)` | Lead Instructor required but could not be assigned |
+| `n/a` | Role not required for this club-week (BI/IFP alternate mode only) |
+
+### Example Output
+
+```
+Day        Date             Instructor    Lead Instructor  Tug Pilot       BI/IFP         LPS            Duty Pilot     
+------------------------------------------------------------------------------------------------------------------------------
+Wednesday  2026-02-01       ALICE         BOB              CHARLIE         DAVE           EVE            FRANK          
+Saturday   2026-02-04       BOB           (REQUIRED)       ALICE           NEED TO FILL   CHARLIE        DAVE           
+Sunday     2026-02-05       CHARLIE       EVE              DAVE            n/a            FRANK          ALICE          
+```
+
+---
+
+## Testing
+
+Run the test suite:
 
 ```bash
-
-python3 rota.py --start 2026-02-01 --months 2 --bi-alternate
-```
-A "club-week" means the Wed/Sat/Sun operating cycle (treated as one unit).
-
-The default pattern is:
-
-Week 1: BI/IFP required
-Week 2: BI/IFP not required (shown as N/A)
-Week 3: BI/IFP required
-
-etc.
-
-Starting with a no-BI week
-If you want the first club-week to be the "no BI required" week, use:
-
-```bash
-
-python3 rota.py --start 2026-02-01 --months 2 --bi-alternate --bi-first-off
+pytest tests/test_rota.py -v
 ```
 
-### Output notes
+---
 
-If no eligible person can be found, the role is shown as: NEED TO FILL
+## Notes
 
-If a Lead Instructor is required but cannot be assigned, it is shown as: (REQUIRED)
-
-If BI/IFP is not required for that club-week (alternate BI mode), it is shown as: n/a
+- All dates must be in ISO format: `YYYY-MM-DD`
+- Inactive periods are **inclusive** on both start and end dates
+- The "club-week" always starts on **Wednesday** for consistency
