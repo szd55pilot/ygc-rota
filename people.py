@@ -136,9 +136,8 @@ PEOPLE = {
             ("2026-06-14", "2026-06-15"),
             ("2026-06-17", "2026-06-18"),
             ("2026-06-20", "2026-06-21"),
-            ("2026-06-27", "2026-06-28"),
+            ("2026-06-27", "2026-06-28")
         ]
-
     },
 
     # "A HOLLINGS": {
@@ -169,7 +168,7 @@ PEOPLE = {
         ]
     },
 
-        "P NAYERI": {
+    "P NAYERI": {
         "allowed_days": {"Sun"},
         "allowed_roles": {"Instructor", "Tug Pilot", "Leed Instructor"},
         "max_shifts_per_week": 1,
@@ -189,7 +188,7 @@ PEOPLE = {
     },
 
     "D JOHNSTON": {
-        "allowed_days": {"Wed", "Sat", "Sun"},
+        "allowed_days": {"Wed"},
         "allowed_roles": {"Tug Pilot"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
@@ -211,15 +210,27 @@ PEOPLE = {
     },
 
     "R BECK": {
-        "allowed_days": {"Wed", "Sat", "Sun"},
+        "allowed_days": {"Wed", "Sat"},
         "allowed_roles": {"Tug Pilot"},
-        "max_shifts_per_week": 1
+        "max_shifts_per_week": 1,
+        "inactive_periods": [
+            ("2026-04-04", "2026-04-14"),
+            ("2026-04-18", "2026-04-24"),
+            ("2026-05-20", "2026-05-20"),
+            ("2026-05-27", "2026-06-09")
+        ]
     },
 
     "H MCDERMOTT-ROW": {
-        "allowed_days": {"Wed"},
+        "allowed_days": {"Wed", "Sat"},
         "allowed_roles": {"Tug Pilot"},
-        "max_shifts_per_week": 1
+        "max_shifts_per_week": 1,
+        "inactive_periods": [
+            ("2026-04-19", "2026-04-23"),
+            ("2026-05-17", "2026-05-23"),
+            ("2026-06-04", "2026-06-06"),
+            ("2026-06-15", "2026-06-19")
+        ]
     },
 
     "R NUZA": {
@@ -243,7 +254,8 @@ PEOPLE = {
         "max_shifts_per_week": 1,
         "inactive_periods": [
             ("2026-03-13", "2026-03-16"),
-            ("2026-03-27", "2026-03-29")
+            ("2026-03-27", "2026-03-29"),
+            ("2026-05-23", "2026-05-23")
         ]
     },
 
@@ -254,9 +266,16 @@ PEOPLE = {
     },
 
        "R WADDINGTON": {
-        "allowed_days": {"Sat", "Sun"},
+        "allowed_days": {"Sun"},
         "allowed_roles": {"BI/IFP"},
-        "max_shifts_per_week": 1
+        "max_shifts_per_week": 1,
+        "inactive_periods": [
+            ("2026-06-21", "2026-06-21"),
+            ("2026-06-28", "2026-06-28"),
+            ("2026-07-19", "2026-07-19"),
+            ("2026-08-09", "2026-08-09"),
+            ("2026-08-16", "2026-08-16")
+        ]
     },
 
        "T PAVIS": {
@@ -278,7 +297,6 @@ PEOPLE = {
             ("2026-06-20", "2026-06-21"),
             ("2026-06-27", "2026-06-28")
         ]
-
 #  not avail 18/19 July
     },
     
@@ -364,7 +382,7 @@ PEOPLE = {
           ("2026-05-20", "2026-05-20"),
           ("2026-05-27", "2026-05-27"),
           ("2026-06-03", "2026-06-03"),
-          ("2026-06-10", "2026-06-10"),
+          ("2026-06-10", "2026-06-10")
         ]
     },
 
@@ -374,8 +392,7 @@ PEOPLE = {
         "max_shifts_per_week": 1,
         "inactive_periods": [
             ("2026-07-01", "2026-07-31")
-]
-
+        ]
     },
 
     "C THRUSH": {
@@ -443,11 +460,11 @@ PEOPLE = {
         "max_shifts_per_week": 1
     },
 
-    "R DONNELLY": {
-        "allowed_days": {"Wed"},
-        "allowed_roles": {"Duty Pilot"},
-        "max_shifts_per_week": 1
-    },
+    # "R DONNELLY": {
+    #     "allowed_days": {"Wed"},
+    #     "allowed_roles": {"Duty Pilot"},
+    #     "max_shifts_per_week": 1
+    # },
 
     "P TOMLINSON": {
         "allowed_days": {"Sun"},
@@ -487,7 +504,7 @@ PEOPLE = {
     },
 
     "C LEPARD": {
-        "allowed_days": {"Sat", "Sun"},
+        "allowed_days": {"Sat"},
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1
     },
@@ -523,5 +540,4 @@ PEOPLE = {
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1
     },
-
 }
