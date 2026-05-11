@@ -1,23 +1,11 @@
-# people.py
-
-# All instructors, deduped, role = DI
-
-# To make someone inactive for a period
-#         "inactive_periods": [
-#            ("2026-02-01", "2026-03-30")
-#       ]
-
 PEOPLE = {
-#
-# Instructors
-#
+
     "A MARVIN": {
         "allowed_days": {"Wed"},
         "allowed_roles": {"Instructor", "Lead Instructor"},
         "max_shifts_per_week": 1,
         "requires_snr_di": False,
         "inactive_periods": [
-            ("2026-05-27", "2026-05-27"),
             ("2026-06-03", "2026-06-03")
         ]
     },
@@ -31,11 +19,10 @@ PEOPLE = {
 
     "K BATTY": {
         "allowed_days": {"Sat", "Sun"},
-        "allowed_roles": {"Instructor", "Tug Pilot", "Lead Instructor"},
+        "allowed_roles": {"Instructor", "Lead Instructor", "Tug Pilot"},
         "max_shifts_per_week": 1,
         "requires_snr_di": False,
         "inactive_periods": [
-            ("2026-04-01", "2026-05-05"),
             ("2026-06-17", "2026-06-18"),
             ("2026-06-27", "2026-06-28")
         ]
@@ -45,7 +32,10 @@ PEOPLE = {
         "allowed_days": {"Sat"},
         "allowed_roles": {"Instructor", "Lead Instructor"},
         "max_shifts_per_week": 1,
-        "requires_snr_di": False
+        "requires_snr_di": False,
+        "inactive_periods": [
+            ("2026-07-10", "2026-07-10")
+        ]
     },
 
     "G ALEXANDER": {
@@ -54,13 +44,11 @@ PEOPLE = {
         "max_shifts_per_week": 1,
         "requires_snr_di": False,
         "inactive_periods": [
-            ("2026-04-19", "2026-04-20"),
             ("2026-05-31", "2026-06-01"),
             ("2026-06-14", "2026-06-15"),
             ("2026-06-28", "2026-06-29"),
             ("2026-07-05", "2026-07-06"),
             ("2026-07-12", "2026-07-13")
-# not available 16th & 23rd August
         ]
     },
 
@@ -75,10 +63,7 @@ PEOPLE = {
         "allowed_days": {"Sat"},
         "allowed_roles": {"Instructor"},
         "max_shifts_per_week": 1,
-        "requires_snr_di": False,
-            "inactive_periods": [
-            ("2026-03-13", "2026-03-22")
-        ]
+        "requires_snr_di": False
     },
 
     "A PEACOCK": {
@@ -87,16 +72,6 @@ PEOPLE = {
         "max_shifts_per_week": 1,
         "requires_snr_di": True,
         "inactive_periods": [
-            ("2026-04-04", "2026-04-04"),
-            ("2026-04-05", "2026-04-05"),
-            ("2026-04-11", "2026-04-11"),
-            ("2026-04-12", "2026-04-12"),
-            ("2026-04-18", "2026-04-18"),
-            ("2026-04-26", "2026-04-26"),
-            ("2026-05-02", "2026-05-02"),
-            ("2026-05-09", "2026-05-09"),
-            ("2026-05-10", "2026-05-10"),
-            ("2026-05-17", "2026-05-17"),
             ("2026-05-24", "2026-05-24"),
             ("2026-05-31", "2026-05-31"),
             ("2026-06-06", "2026-06-06"),
@@ -113,7 +88,7 @@ PEOPLE = {
         "allowed_days": {"Wed"},
         "allowed_roles": {"Instructor"},
         "max_shifts_per_week": 1,
-        "requires_snr_di": False,
+        "requires_snr_di": False
     },
 
     "P TOUGH": {
@@ -122,13 +97,6 @@ PEOPLE = {
         "max_shifts_per_week": 1,
         "requires_snr_di": False,
         "inactive_periods": [
-            ("2026-04-04", "2026-04-05"),
-            ("2026-04-11", "2026-04-12"),
-            ("2026-04-15", "2026-04-16"),
-            ("2026-04-22", "2026-04-23"),
-            ("2026-04-29", "2026-04-30"),
-            ("2026-05-03", "2026-05-04"),
-            ("2026-05-09", "2026-05-10"),
             ("2026-05-16", "2026-05-17"),
             ("2026-05-27", "2026-05-28"),
             ("2026-06-03", "2026-06-04"),
@@ -140,25 +108,9 @@ PEOPLE = {
         ]
     },
 
-    # "A HOLLINGS": {
-    #     "allowed_days": {"Sat", "Sun", "Wed"},
-    #     "allowed_roles": {"Instructor"},
-    #     "max_shifts_per_week": 1,
-    #     "requires_snr_di": True,
-    #     "inactive_periods": [
-    #         ("2026-02-04", "2026-03-07"),
-    #         ("2026-02-12", "2026-03-15"),
-    #         ("2026-02-20", "2026-03-23"),
-    #         ("2026-02-28", "2026-03-03"),
-    #         ("2026-03-08", "2026-03-11"),
-    #         ("2026-03-16", "2026-03-19"),
-    #         ("2026-03-24", "2026-03-27"),
-    #     ]
-    # },
-
     "R KALIN": {
         "allowed_days": {"Wed", "Sat", "Sun"},
-        "allowed_roles": {"Instructor", "Tug Pilot", "Lead Instructor"},
+        "allowed_roles": {"Instructor", "Lead Instructor", "Tug Pilot"},
         "max_shifts_per_week": 1,
         "requires_snr_di": False,
         "inactive_periods": [
@@ -170,17 +122,11 @@ PEOPLE = {
 
     "P NAYERI": {
         "allowed_days": {"Sun"},
-        "allowed_roles": {"Instructor", "Tug Pilot", "Leed Instructor"},
+        "allowed_roles": {"Instructor", "Lead Instructor", "Tug Pilot"},
         "max_shifts_per_week": 1,
-        "requires_snr_di": False,
-        "inactive_periods": [
-            ("2026-02-01", "2026-03-17")
-        ]
+        "requires_snr_di": False
     },
 
-#
-# Tug Pilots
-#
     "M BOND": {
         "allowed_days": {"Wed", "Sat", "Sun"},
         "allowed_roles": {"Tug Pilot"},
@@ -190,10 +136,7 @@ PEOPLE = {
     "D JOHNSTON": {
         "allowed_days": {"Wed"},
         "allowed_roles": {"Tug Pilot"},
-        "max_shifts_per_week": 1,
-        "inactive_periods": [
-            ("2026-02-01", "2026-02-09")
-        ]
+        "max_shifts_per_week": 1
     },
 
     "R HAMBLY": {
@@ -201,8 +144,6 @@ PEOPLE = {
         "allowed_roles": {"Tug Pilot"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
-            ("2026-03-01", "2026-03-18"),
-            ("2026-03-21", "2026-04-18"),
             ("2026-05-23", "2026-06-19"),
             ("2026-06-24", "2026-07-18"),
             ("2026-09-19", "2026-12-31")
@@ -214,8 +155,6 @@ PEOPLE = {
         "allowed_roles": {"Tug Pilot"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
-            ("2026-04-04", "2026-04-14"),
-            ("2026-04-18", "2026-04-24"),
             ("2026-05-20", "2026-05-20"),
             ("2026-05-27", "2026-06-09")
         ]
@@ -226,8 +165,6 @@ PEOPLE = {
         "allowed_roles": {"Tug Pilot"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
-            ("2026-04-19", "2026-04-23"),
-            ("2026-05-17", "2026-05-23"),
             ("2026-06-04", "2026-06-06"),
             ("2026-06-15", "2026-06-19")
         ]
@@ -245,27 +182,22 @@ PEOPLE = {
         "max_shifts_per_week": 1
     },
 
-#
-# BI/IFPs
-#
     "M BLADES": {
         "allowed_days": {"Sat", "Sun"},
         "allowed_roles": {"BI/IFP"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
-            ("2026-03-13", "2026-03-16"),
-            ("2026-03-27", "2026-03-29"),
             ("2026-05-23", "2026-05-23")
         ]
     },
 
-       "J FELAKOWSKI": {
+    "J FELAKOWSKI": {
         "allowed_days": {"Wed"},
         "allowed_roles": {"BI/IFP"},
         "max_shifts_per_week": 1
     },
 
-       "R WADDINGTON": {
+    "R WADDINGTON": {
         "allowed_days": {"Sun"},
         "allowed_roles": {"BI/IFP"},
         "max_shifts_per_week": 1,
@@ -278,14 +210,12 @@ PEOPLE = {
         ]
     },
 
-       "T PAVIS": {
+    "T PAVIS": {
         "allowed_days": {"Sat"},
-        "allowed_roles": {"BI/IFP", "Tug Pilot"},
+        "allowed_roles": {"Tug Pilot", "BI/IFP"},
         "max_shifts_per_week": 1
     },
-#
-# LPSs
-#
+
     "P HUBER": {
         "allowed_days": {"Sat", "Sun"},
         "allowed_roles": {"LPS"},
@@ -297,9 +227,8 @@ PEOPLE = {
             ("2026-06-20", "2026-06-21"),
             ("2026-06-27", "2026-06-28")
         ]
-#  not avail 18/19 July
     },
-    
+
     "A SPRAY": {
         "allowed_days": {"Sat", "Sun"},
         "allowed_roles": {"LPS"},
@@ -326,11 +255,8 @@ PEOPLE = {
 
     "A CARDEN": {
         "allowed_days": {"Wed", "Sat", "Sun"},
-        "allowed_roles": {"Duty Pilot", "LPS"},
-        "max_shifts_per_week": 1,
-        "inactive_periods": [
-            ("2026-04-04", "2026-04-05")
-        ]
+        "allowed_roles": {"LPS", "Duty Pilot"},
+        "max_shifts_per_week": 1
     },
 
     "H SOUTHWORTH": {
@@ -378,11 +304,10 @@ PEOPLE = {
         "allowed_roles": {"LPS"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
-          ("2026-04-01", "2026-04-01"),
-          ("2026-05-20", "2026-05-20"),
-          ("2026-05-27", "2026-05-27"),
-          ("2026-06-03", "2026-06-03"),
-          ("2026-06-10", "2026-06-10")
+            ("2026-05-20", "2026-05-20"),
+            ("2026-05-27", "2026-05-27"),
+            ("2026-06-03", "2026-06-03"),
+            ("2026-06-10", "2026-06-10")
         ]
     },
 
@@ -400,9 +325,7 @@ PEOPLE = {
         "allowed_roles": {"LPS"},
         "max_shifts_per_week": 1
     },
-#
-# Duty Pilots
-#
+
     "M DOWLING": {
         "allowed_days": {"Wed"},
         "allowed_roles": {"Duty Pilot"},
@@ -413,7 +336,7 @@ PEOPLE = {
     },
 
     "J DAY": {
-        "allowed_days": {"Sun"},
+        "allowed_days": {"Wed", "Sat", "Sun"},
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1
     },
@@ -460,12 +383,6 @@ PEOPLE = {
         "max_shifts_per_week": 1
     },
 
-    # "R DONNELLY": {
-    #     "allowed_days": {"Wed"},
-    #     "allowed_roles": {"Duty Pilot"},
-    #     "max_shifts_per_week": 1
-    # },
-
     "P TOMLINSON": {
         "allowed_days": {"Sun"},
         "allowed_roles": {"Duty Pilot"},
@@ -477,12 +394,6 @@ PEOPLE = {
             ("2026-06-28", "2026-06-29"),
             ("2026-07-19", "2026-07-20")
         ]
-    },
-
-    "J DAY": {
-        "allowed_days": {"Wed", "Sat", "Sun"},
-        "allowed_roles": {"Duty Pilot"},
-        "max_shifts_per_week": 1
     },
 
     "B DOUGLAS": {
@@ -512,10 +423,7 @@ PEOPLE = {
     "J MASHEDER": {
         "allowed_days": {"Sat"},
         "allowed_roles": {"Duty Pilot"},
-        "max_shifts_per_week": 1,
-        "inactive_periods": [
-            ("2026-05-09", "2026-05-16")
-        ]
+        "max_shifts_per_week": 1
     },
 
     "C WHITE": {
@@ -529,15 +437,13 @@ PEOPLE = {
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
-            ("2026-04-01", "2026-04-25"),
-            ("2026-05-10", "2026-05-11"),
             ("2026-05-16", "2026-05-17")
         ]
     },
 
     "G DUNN": {
-        "allowed_days": {"Sat", "Sun"},
+        "allowed_days": {"Sat"},
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1
-    },
+    }
 }
