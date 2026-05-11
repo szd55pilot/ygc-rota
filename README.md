@@ -13,6 +13,7 @@ A Python tool that generates instructor rotas for York Gliding Centre operating 
 - **Inactive periods**: Support for vacation/unavailability windows
 - **Alternate BI/IFP weeks**: Optional every-other-week scheduling for BI/IFP role
 - **Club-week anchoring**: Groups Wed/Sat/Sun as a single scheduling unit
+- **Web frontend**: Edit instructor availability interactively (no dependencies required)
 
 ---
 
@@ -22,6 +23,7 @@ A Python tool that generates instructor rotas for York Gliding Centre operating 
 |------|---------|
 | `rota.py` | Main rota generator engine |
 | `people.py` | Person definitions and availability |
+| `ygc-rota.py` | Web frontend for managing availability |
 | `tests/test_rota.py` | Unit tests |
 
 ---
@@ -80,25 +82,27 @@ PEOPLE = {
 
 ## Usage
 
-### Basic (one month from today)
+### Generate Rotas (Command Line)
+
+#### Basic (one month from today)
 
 ```bash
 python3 rota.py
 ```
 
-### Specific start date
+#### Specific start date
 
 ```bash
 python3 rota.py --start 2026-02-01
 ```
 
-### Multiple months
+#### Multiple months
 
 ```bash
 python3 rota.py --start 2026-02-01 --months 3
 ```
 
-### Alternate BI/IFP weeks
+#### Alternate BI/IFP weeks
 
 By default, BI/IFP is required on every operating day. Use `--bi-alternate` to require BI/IFP only on alternating club-weeks (Wed/Sat/Sun groupings):
 
@@ -112,17 +116,54 @@ Pattern:
 - Week 3: BI/IFP required
 - ...
 
-### Invert alternate pattern (start with no BI week)
+#### Invert alternate pattern (start with no BI week)
 
 ```bash
 python3 rota.py --start 2026-02-01 --bi-alternate --bi-first-off
 ```
 
-### View all options
+#### View all options
 
 ```bash
 python3 rota.py --help
 ```
+
+---
+
+### Manage Availability (Web Frontend)
+
+The `ygc-rota.py` script provides a lightweight web interface for editing instructor availability and inactive periods. No external dependencies or build tools required—just Python 3.
+
+#### Running locally
+
+```bash
+python3 ygc-rota.py --people-file people.py --port 8000
+```
+
+Then open your browser to:
+```
+http://127.0.0.1:8000
+```
+
+#### Features
+
+- **Select an instructor** from the dropdown menu
+- **View availability summary** (allowed days, roles, max shifts, supervision requirements)
+- **Add/edit/remove inactive periods** (vacations, unavailable dates, etc.)
+- **Preview changes** before saving to verify accuracy
+- **Automatic backups** — only the most recent backup (`people.py.bak`) is kept
+- **Validation** — rejects dates before today and ensures ISO format `YYYY-MM-DD`
+- **Clean formatting** — rewrites `people.py` in consistent canonical format
+
+#### Workflow
+
+1. Start the web server with the command above
+2. Select a person from the dropdown
+3. Review their availability summary
+4. Add or modify inactive periods using date pickers
+5. Click "Preview changes" to see before/after comparison
+6. Click "Confirm save" to write changes and auto-backup the old file
+7. A success message appears with the backup filename
 
 ---
 
