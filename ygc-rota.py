@@ -313,7 +313,7 @@ def format_period_list(periods):
 
 def render_page(people_file: Path, selected_name: str = "", message: str = "", error: str = ""):
     people = load_people(people_file)
-    names = list(people.keys())
+    names = sorted(people.keys(), key=lambda name: name.split()[-1].lower())
 
     if not names:
         raise RuntimeError("PEOPLE is empty")
