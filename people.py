@@ -406,6 +406,9 @@ PEOPLE = {
         "allowed_days": {"Wed", "Sat", "Sun"},
         "allowed_roles": {"LPS"},
         "max_shifts_per_week": 1,
+        "inactive_periods": [
+            ("2026-09-05", "2026-09-20")
+        ]
     },
 
     "M DOWLING": {
