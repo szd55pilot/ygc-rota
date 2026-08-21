@@ -603,6 +603,7 @@ code.inline {{
     margin-top: 18px;
     color: var(--muted);
     font-size: 0.9rem;
+    text-align: center;
 }}
 
 .roles-vertical {{
@@ -747,7 +748,7 @@ function confirmCleanup() {{
         {error_html}
 
         <div class="footer-note">
-            Tip: deleting all rows (or clearing the last row) removes inactive periods for this person.
+            Version 1.0.1
         </div>
     </div>
 </div>
