@@ -255,6 +255,47 @@ def update_person_inactive_periods(people_file: Path, person_name: str, periods)
     people_file.write_text(render_people_py(people), encoding="utf-8")
     return backup
 
+def remove_expired_inactive_periods(people_file: Path):
+    """Remove inactive periods whose end date is before today from all people."""
+    people = load_people(people_file)
+    today = date.today()
+
+    removed = 0
+    people_affected = 0
+
+    for person_name, info in people.items():
+        periods = normalize_inactive_periods(info.get("inactive_periods", []))
+        remaining = []
+        person_removed = 0
+
+        for start, end in periods:
+            try:
+                end_date = date.fromisoformat(end)
+            except ValueError:
+                # Leave malformed dates untouched rather than deleting data.
+                remaining.append((start, end))
+                continue
+
+            if end_date < today:
+                removed += 1
+                person_removed += 1
+            else:
+                remaining.append((start, end))
+
+        if person_removed:
+            people_affected += 1
+
+            if remaining:
+                info["inactive_periods"] = remaining
+            else:
+                info.pop("inactive_periods", None)
+
+    if removed:
+        backup = backup_people_file(people_file)
+        people_file.write_text(render_people_py(people), encoding="utf-8")
+        return removed, people_affected, backup
+
+    return 0, 0, None
 
 def render_person_summary(person: dict) -> str:
     days = sorted_days(person.get("allowed_days", set()))
@@ -638,6 +679,14 @@ function removeRow(button) {{
 function onPersonChange() {{
     document.getElementById("person-select-form").submit();
 }}
+
+function confirmCleanup() {{
+        return confirm(
+            "Remove all inactive periods whose end date is before today?\\n\\n" +
+            "A backup of people.py will be created before any changes are saved."
+        );
+}}
+
 </script>
 </head>
 <body>
@@ -685,6 +734,12 @@ function onPersonChange() {{
             <div class="actions">
                 <button class="btn btn-secondary" type="button" onclick="addRow()">Add another period</button>
                 <button class="btn btn-primary" type="submit">Preview changes</button>
+            </div>
+        </form>
+
+        <form method="post" action="/cleanup-expired" onsubmit="return confirmCleanup();">
+            <div class="actions">
+                <button class="btn btn-danger" type="submit">Remove expired holidays</button>
             </div>
         </form>
 
@@ -912,6 +967,10 @@ class AvailabilityHandler(BaseHTTPRequestHandler):
             self.handle_confirm()
             return
 
+        if parsed.path == "/cleanup-expired":
+            self.handle_cleanup_expired()
+            return
+
         self.send_error(404, "Not found")
 
     def handle_preview(self):
@@ -980,6 +1039,28 @@ class AvailabilityHandler(BaseHTTPRequestHandler):
 
         except Exception as exc:
             self._redirect(f"/?person={quote_plus(person)}&error={quote_plus(str(exc))}")
+
+    def handle_cleanup_expired(self):
+        try:
+            removed, people_affected, backup = remove_expired_inactive_periods(
+                self.people_file
+            )
+
+            if removed:
+                msg = (
+                    f"Removed {removed} expired holiday period"
+                    f"{'' if removed == 1 else 's'} from "
+                    f"{people_affected} person"
+                    f"{'' if people_affected == 1 else 's'}. "
+                    f"Backup updated: {backup.name}"
+                )
+            else:
+                msg = "No expired holiday periods were found."
+
+            self._redirect(f"/?message={quote_plus(msg)}")
+
+        except Exception as exc:
+            self._redirect(f"/?error={quote_plus(str(exc))}")
 
     def log_message(self, format, *args):
         print("%s - - [%s] %s" % (
