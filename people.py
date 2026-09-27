@@ -87,7 +87,7 @@ PEOPLE = {
         "allowed_days": {"Sat", "Sun"},
         "allowed_roles": {"Instructor"},
         "max_shifts_per_week": 1,
-        "requires_snr_di": True,
+        "requires_snr_di": False,
         "inactive_periods": [
             ("2026-10-03", "2026-10-11"),
             ("2026-10-18", "2026-10-18"),
@@ -433,6 +433,16 @@ PEOPLE = {
         "allowed_days": {"Wed"},
         "allowed_roles": {"Duty Pilot"},
         "max_shifts_per_week": 1,
+    },
+
+    "J ATKIN": {
+        "allowed_days": {"Wed"},
+        "allowed_roles": {"Duty Pilot"},
+        "max_shifts_per_week": 1,
+        "inactive_periods": [
+            ("2026-11-18", "2026-11-18"),
+            ("2026-12-23", "2026-12-23")
+        ]
     },
 
     "J DAY": {
