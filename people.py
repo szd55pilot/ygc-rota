@@ -247,6 +247,9 @@ PEOPLE = {
         "allowed_days": {"Wed"},
         "allowed_roles": {"BI/IFP"},
         "max_shifts_per_week": 1,
+        "inactive_periods": [
+            ("2026-10-07", "2026-10-28")
+        ]
     },
 
     "R WADDINGTON": {
@@ -399,7 +402,7 @@ PEOPLE = {
 
     "K MALONE": {
         "allowed_days": {"Wed"},
-        "allowed_roles": {"LPS"},
+        "allowed_roles": {"BI/IFP", "LPS"},
         "max_shifts_per_week": 1,
         "inactive_periods": [
             ("2026-11-13", "2026-11-22")
